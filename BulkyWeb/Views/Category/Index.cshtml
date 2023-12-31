@@ -1,21 +1,66 @@
 ﻿@model IEnumerable<Category> 
 
-<h2>Category List</h2>
+@{
+    int counter = 1;
+    bool isHavingRows = Model.Any();    
+}
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Category Name</th>
-            <th>Display Order</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var item in Model)
-        {
-            <tr>
-                <td>@item.Name</td>
-                <td>@item.DisplayOrder</td>
-            </tr>
-        }        
-    </tbody>
-</table>
+<div class="container">
+    <div class="row pt-4 pb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Category List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="category" asp-action="create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Create New Category
+            </a>
+        </div>
+    </div> 
+
+    @if (!isHavingRows)
+    {
+        <div class="row">
+            <div class="col-12 mt-4">
+                <h3 class="text-danger">We don't have any category.</h3>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Sr</th>
+                            <th>Category Name</th>
+                            <th>Display Order</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@counter</td>
+                                <td>@item.Name</td>
+                                <td>@item.DisplayOrder</td>
+                                <td>
+                                    <div class="w-75 btn-group" role="group">
+                                        <a asp-controller="category" asp-action="edit" asp-route-id="@item.Id" class="btn btn-primary mx-2">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </a>
+                                        <a asp-controller="category" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger mx-2">
+                                            <i class="bi bi-trash-fill"></i> Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            counter++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
